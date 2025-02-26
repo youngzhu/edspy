@@ -1,6 +1,7 @@
 from pathlib import Path
 import json
 from openai import OpenAI
+from random import choice
 
 LOG_CONTENT_JSON_PATH = Path(__file__).parent / "data" / "log-content.json"
 
@@ -27,6 +28,11 @@ class LogContent:
         else:
             # 跟新本地数据
             self._update_local_data()
+        
+    def daily(self):
+        """从列表中随机取一条作为日报内容"""
+        return choice(self.dailyWorkContent)
+
 
     def _update_local_data(self):
         """将AI生成的内容写入本地"""
@@ -68,9 +74,8 @@ class LogContent:
         self._jsonContent = cleaned_json
         self._from_json(json.loads(cleaned_json))
 
-    # 默认返回本地文件中的数据
     def _default(self):
-        """默认读取本地文件中的数据返回"""
+        """默认读取本地文件中的数据"""
         # 测试无法通过
         # path = Path('data/log-content.json')
         # current_dir = Path(__file__).parent
@@ -102,3 +107,4 @@ class LogContent:
         self.weeklyPlanWork = jsonContent['weeklyPlanWork']
         # 下周学习计划
         self.weeklyPlanStudy = jsonContent['weeklyPlanStudy']
+
