@@ -45,7 +45,7 @@ class LogContent:
         请以JSON格式返回一个周报。
         包含以下内容（其中多项不需要列表，用换行符分割）：
         1. 每日工作（dailyWorkContent）：以列表形式返回3-5条内容
-        2. 每周工作（weeklyWorkContent）：3-5项，不要列表
+        2. 每周工作（weeklyWorkContent）：3-5项，要有序号，不要列表
         3. 本周学习计划（weeklyStudyContent）：1-2项
         4. 本周总结（weeklySummary）
         5. 下周工作计划（weeklyPlanWork）：3-5项
