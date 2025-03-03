@@ -101,7 +101,7 @@ class EdsLogger:
         time.sleep(2)
 
         # 开始填日报
-        self._daily_log()
+        # self._daily_log()
 
     def _weekly_log(self):
         """填周报"""
@@ -141,7 +141,11 @@ class EdsLogger:
         plan_study.send_keys(self.logContent.weeklyPlanStudy)
                                 
         # 提交
-        self.driver.find_element(By.ID, "lblSubmit").click()
+        if self.settings.debugging:
+            print("调试中...")
+        else:
+            print("生产中...")
+        # self.driver.find_element(By.ID, "lblSubmit").click()
 
         print('周报填写完成')
 
