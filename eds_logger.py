@@ -1,6 +1,6 @@
 import os
 import time
-from datetime import date
+from datetime import date, timedelta
 
 from dotenv import load_dotenv
 
@@ -15,6 +15,9 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import StaleElementReferenceException
+
+import chinese_calendar as calendar
 
 class EdsLogger:
     def __init__(self):
@@ -24,7 +27,7 @@ class EdsLogger:
 
         # options = webdriver.ChromeOptions()
         options = Options()
-        # options.add_argument("--headless=new")
+        options.add_argument("--headless=new")
 
         # options.add_argument('--ignore-certificate-errors')
         # options.add_argument('--ignore-ssl-errors')
@@ -94,13 +97,13 @@ class EdsLogger:
         self._prepped_data()
 
         # 填周报
-        self._do_weekly_log()
+        self._weekly_log()
         time.sleep(2)
 
         # 开始填日报
-        self._do_daily_log()
+        self._daily_log()
 
-    def _do_weekly_log(self):
+    def _weekly_log(self):
         """填周报"""
         # self.driver.find_element(By.ID, "lblWorkLog").click()
         self.driver.get("http://eds.newtouch.cn/eds36web/WorkWeekly/WorkWeeklyInfo.aspx")
@@ -140,12 +143,79 @@ class EdsLogger:
         # 提交
         self.driver.find_element(By.ID, "lblSubmit").click()
 
-    def _do_daily_log(self):
-        print(f'日报内容：{self.logContent.daily()}')
+        print('周报填写完成')
+
+    def _daily_log(self):
+        # print(f'日报内容：{self.logContent.daily()}')
         # self.driver.get(self.settings.daily_url)
-        # self.driver.get("http://eds.newtouch.cn/eds3/worklog.aspx")
+        self.driver.get("http://eds.newtouch.cn/eds3/worklog.aspx")
 
+        # 填7天
+        log_date = date.today()
+        # log_date = date(2025, 3, 3)
+        for _ in range(7):
+            self._do_daily_log(log_date)
+            time.sleep(1)
 
+            # 当天日报完成，NEXT
+            self.driver.find_element(By.ID, "btnnext").click()
+            log_date = log_date + timedelta(days=1)
+
+    def _do_daily_log(self, log_date):
+        """填日报"""
+        if self._should_log(log_date):
+            memo = self.logContent.daily()
+
+            # 页面上点2次【确定】，即可完成一天的日志
+            # 上午
+            # self.driver.find_element(By.ID, "txtMemo").send_keys(memo)
+            # self.driver.find_element(By.ID, "btnSave").click()
+            # 下午
+            # self.driver.find_element(By.ID, "txtMemo").send_keys(memo)
+            # self.driver.find_element(By.ID, "btnSave").click()
+            for _ in range(2):
+                btn_save = WebDriverWait(self.driver, 10).until(
+                    EC.presence_of_element_located((By.ID, "btnSave"))
+                )
+
+                try:
+                    self.driver.find_element(By.ID, "txtMemo").send_keys(memo)
+                    # self.driver.find_element(By.ID, "btnSave").click()
+                    btn_save.click()
+
+                except Exception as e:
+                    print(f"出现错误：{e}")
+                
+                time.sleep(2)
+
+            print(f"{log_date} - 日志完成")
+
+    def _should_log(self, log_date):
+        """ {log_date} 这天是否还需要填写日报"""
+        if calendar.is_workday(log_date):
+            # 开始时间 
+            # 还未填日志的，有值；已经填过的，值为空
+            retries = 3
+            for i in range(retries):
+                try:
+                    start_time = WebDriverWait(self.driver, 10).until(
+                        EC.presence_of_element_located((By.ID, "txtStartTime"))
+                    )
+                    break
+                except StaleElementReferenceException:
+                    if i == retries - 1:
+                        raise
+            start_time_value = start_time.get_attribute("value")
+            print(f"{log_date}: {start_time_value}")
+            
+            if start_time_value:
+                return True
+            else:
+                print(f"{log_date} - 已填写")
+                return False
+        else:
+            print(f"{log_date} - 休息")
+            return False
 
 
     def _prepped_data(self):

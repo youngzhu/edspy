@@ -5,4 +5,4 @@ import time
 if __name__ == '__main__':
     app = EdsLogger()
     app.run()
-    time.sleep(2000)
+    # time.sleep(20)
