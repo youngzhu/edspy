@@ -2,15 +2,16 @@ from pathlib import Path
 import json
 from openai import OpenAI
 from random import choice
+from datetime import date
 
-LOG_CONTENT_JSON_PATH = Path(__file__).parent / "data" / "log-content.json"
+DATA_DIR = Path(__file__).parent / "data"
 
 class LogContent:
     """提供周报和日报的内容
 
     主要有完成以下任务：
     1. 通过大语言模型生成内容
-    2. 替换原有的本地文件，以备当LLM服务不可用时，取本地数据
+    2. 生成新的JSON文件，以备当LLM服务不可用时，取本地数据
     """
 
     def __init__(self, eds_logger) -> None:
@@ -27,16 +28,18 @@ class LogContent:
             self._default()
         else:
             # 跟新本地数据
-            self._update_local_data()
+            self._save()
         
     def daily(self):
         """从列表中随机取一条作为日报内容"""
         return choice(self.dailyWorkContent)
 
 
-    def _update_local_data(self):
+    def _save(self):
         """将AI生成的内容写入本地"""
-        LOG_CONTENT_JSON_PATH.write_text(self._jsonContent, encoding='utf-8')
+        file_name = f"log-content-{str(date.today())}.json"
+        json_file = Path(__file__).parent / "data" / file_name
+        json_file.write_text(self._jsonContent, encoding='utf-8')
 
     def _complete(self):
         """调大语言模型生成内容"""
@@ -81,12 +84,17 @@ class LogContent:
         # current_dir = Path(__file__).parent
         # data_path = current_dir / "data" / "log-content.json"
 
+        files = [file for file in DATA_DIR.iterdir()]
+        random_file = choice(files)
+        print(f"读取的本地文件：{random_file.name}")
+
         # 读取文件
-        with open(LOG_CONTENT_JSON_PATH, "r", encoding="utf-8") as f:
-            jsonContent = json.load(f)
+        jsonContent = random_file.read_text(encoding="utf-8")
+        # with open(random_file, "r", encoding="utf-8") as f:
+        #     jsonContent = json.load(f)
 
         # print(jsonContent)
-        self._from_json(jsonContent)
+        self._from_json(json.loads(jsonContent))
     
     def _from_json(self, jsonContent):
         """根据JSON串设置属性"""
