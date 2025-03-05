@@ -24,71 +24,11 @@ class EdsLogger:
         load_dotenv()
         self.mimi = Mimi()
         self.settings = Settings()
-
-        # options = webdriver.ChromeOptions()
-        options = Options()
-        options.add_argument("--headless=new")
-
-        # options.add_argument('--ignore-certificate-errors')
-        # options.add_argument('--ignore-ssl-errors')
-        # options.add_argument('--allow-insecure-localhost')  # 允许本地不安全的连接
-        # options.add_argument("--disable-extensions")  # 禁用扩展
-        # options.add_argument("--no-sandbox")         # 禁用沙箱模式（Linux环境下可能需要）
-        # options.add_argument("--disable-dev-shm-usage")  # 避免内存不足问题
-        # options.add_argument("--disable-gpu")
-        # options.add_argument("--disable-blink-features=AutomationControlled")
-        # options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        # options.add_argument("--user-data-dir=/tmp/chrome-test-profile")
-        # 忽略SSL证书错误（临时方案）
-        # options.add_argument("--ignore-certificate-errors")
-        # # 禁用TLS/SSL协议兼容性检查
-        # options.add_argument("--ssl-version-min=tls1.2")
-        # # 允许不安全的本地主机（针对本地测试）
-        # options.add_argument("--allow-insecure-localhost")
-        # # 禁用QUIC协议（避免网络协议冲突）
-        # options.add_argument("--disable-quic")
-        # options.add_argument("--ignore-certificate-errors")
-        # options.add_argument("--ssl-version=tls1.2")
-        # options.add_argument("--allow-insecure-localhost")
-        # options.add_argument("--disable-web-security")  # 允许跨域请求（针对复杂登录场景）
-
-        # 绕过自动化检测机制
-        # options.add_argument("--disable-blink-features=AutomationControlled")
-        # options.add_experimental_option("excludeSwitches", ["enable-automation"])
-        # options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36")
-
-        # options.add_argument("--no-sandbox")
-        # options.add_argument("--disable-dev-shm-usage")
-        # options.add_argument("--disable-gpu")
-        # options.add_argument("--disable-software-rasterizer")
-
-        # options.add_argument("--proxy-server='direct://'")
-        # options.add_argument("--proxy-bypass-list=*")
-
-        # options.add_argument("--no-sandbox")          # 禁用沙箱（Linux/Windows高权限需求）
-        # options.add_argument("--disable-dev-shm-usage") # 避免共享内存不足
-        # options.add_argument("--disable-blink-features=AutomationControlled") # 绕过自动化检测
-
-        # 为什么不能起名为 webdriver ？
-        # self.webdriver = webdriver.Chrome()
-        # self.driver = webdriver.Chrome(options=options)
-        driver_path = r'E:/drivers/chromedriver-win64/chromedriver.exe'
-        # driver_path = r"E:\drivers\chromedriver-win64\chromedriver.exe"
-        # driver_path = r'E:/drivers/chromedriver-win32/chromedriver.exe'
-        service = Service(executable_path=driver_path)
-        # service = Service(
-        #     executable_path=driver_path,
-        #     log_output="chromedriver_ssl_error.log",  # 日志输出到文件
-        #     service_args=["--verbose"]             # 启用详细日志
-        # )
-        # service = Service(ChromeDriverManager().install()) # 网络不行
-        self.driver = webdriver.Chrome(options=options, service=service) 
-        # 不用 driver 好像也可以啊
-        # self.driver = webdriver.Chrome(options=options) 
-
-
+        
     def run(self):
         """完成每周的周报和日报"""
+        self._set_driver()
+
         print("Run the logger")
         self._login()
         time.sleep(1)
@@ -245,3 +185,69 @@ class EdsLogger:
         # )
         print("登录成功！")
         
+    def _add_driver(self):
+        """添加WebDriver
+
+        不放在 init 里，是因为单元测试里不需要
+        """
+        # options = webdriver.ChromeOptions()
+        options = Options()
+        options.add_argument("--headless=new")
+
+        # options.add_argument('--ignore-certificate-errors')
+        # options.add_argument('--ignore-ssl-errors')
+        # options.add_argument('--allow-insecure-localhost')  # 允许本地不安全的连接
+        # options.add_argument("--disable-extensions")  # 禁用扩展
+        # options.add_argument("--no-sandbox")         # 禁用沙箱模式（Linux环境下可能需要）
+        # options.add_argument("--disable-dev-shm-usage")  # 避免内存不足问题
+        # options.add_argument("--disable-gpu")
+        # options.add_argument("--disable-blink-features=AutomationControlled")
+        # options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        # options.add_argument("--user-data-dir=/tmp/chrome-test-profile")
+        # 忽略SSL证书错误（临时方案）
+        # options.add_argument("--ignore-certificate-errors")
+        # # 禁用TLS/SSL协议兼容性检查
+        # options.add_argument("--ssl-version-min=tls1.2")
+        # # 允许不安全的本地主机（针对本地测试）
+        # options.add_argument("--allow-insecure-localhost")
+        # # 禁用QUIC协议（避免网络协议冲突）
+        # options.add_argument("--disable-quic")
+        # options.add_argument("--ignore-certificate-errors")
+        # options.add_argument("--ssl-version=tls1.2")
+        # options.add_argument("--allow-insecure-localhost")
+        # options.add_argument("--disable-web-security")  # 允许跨域请求（针对复杂登录场景）
+
+        # 绕过自动化检测机制
+        # options.add_argument("--disable-blink-features=AutomationControlled")
+        # options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        # options.add_argument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36")
+
+        # options.add_argument("--no-sandbox")
+        # options.add_argument("--disable-dev-shm-usage")
+        # options.add_argument("--disable-gpu")
+        # options.add_argument("--disable-software-rasterizer")
+
+        # options.add_argument("--proxy-server='direct://'")
+        # options.add_argument("--proxy-bypass-list=*")
+
+        # options.add_argument("--no-sandbox")          # 禁用沙箱（Linux/Windows高权限需求）
+        # options.add_argument("--disable-dev-shm-usage") # 避免共享内存不足
+        # options.add_argument("--disable-blink-features=AutomationControlled") # 绕过自动化检测
+
+        # 为什么不能起名为 webdriver ？
+        # self.webdriver = webdriver.Chrome()
+        # self.driver = webdriver.Chrome(options=options)
+        driver_path = r'E:/drivers/chromedriver-win64/chromedriver.exe'
+        # driver_path = r"E:\drivers\chromedriver-win64\chromedriver.exe"
+        # driver_path = r'E:/drivers/chromedriver-win32/chromedriver.exe'
+        service = Service(executable_path=driver_path)
+        # service = Service(
+        #     executable_path=driver_path,
+        #     log_output="chromedriver_ssl_error.log",  # 日志输出到文件
+        #     service_args=["--verbose"]             # 启用详细日志
+        # )
+        # service = Service(ChromeDriverManager().install()) # 网络不行
+        self.driver = webdriver.Chrome(options=options, service=service) 
+        # 不用 driver 好像也可以啊
+        # self.driver = webdriver.Chrome(options=options) 
+
