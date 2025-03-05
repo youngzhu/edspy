@@ -18,3 +18,4 @@ hplb:
         self.daily_url = "http://eds.newtouch.cn/eds3/worklog.aspx?tabid=0"
 
         self.debugging = os.getenv("DEBUGGING")
+        self.action = os.getenv("ACTION")

@@ -246,7 +246,9 @@ class EdsLogger:
         #     log_output="chromedriver_ssl_error.log",  # 日志输出到文件
         #     service_args=["--verbose"]             # 启用详细日志
         # )
-        # service = Service(ChromeDriverManager().install()) # 网络不行
+        if self.action:
+            service = Service(ChromeDriverManager().install()) # 网络不行
+            
         self.driver = webdriver.Chrome(options=options, service=service) 
         # 不用 driver 好像也可以啊
         # self.driver = webdriver.Chrome(options=options) 
