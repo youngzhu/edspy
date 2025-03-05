@@ -4,7 +4,7 @@ from openai import OpenAI
 from random import choice
 from datetime import date
 
-DATA_DIR = Path(__file__).parent / "data"
+DATA_DIR = Path(__file__).parent.parent / "data"
 
 class LogContent:
     """提供周报和日报的内容
@@ -38,7 +38,7 @@ class LogContent:
     def _save(self):
         """将AI生成的内容写入本地"""
         file_name = f"log-content-{str(date.today())}.json"
-        json_file = Path(__file__).parent / "data" / file_name
+        json_file = DATA_DIR / file_name
         json_file.write_text(self._jsonContent, encoding='utf-8')
 
     def _complete(self):
@@ -47,7 +47,7 @@ class LogContent:
         我是个开发人员，有10年的Java开发工作经验，目前参与开发的是保险业务系统。
         请以JSON格式返回一个周报。
         包含以下内容（其中多项不需要列表，用换行符分割）：
-        1. 每日工作（dailyWorkContent）：以列表形式返回3-5条内容
+        1. 每日工作（dailyWorkContent）：以列表形式返回3至5条内容
         2. 每周工作（weeklyWorkContent）：3-5项，要有序号，不要列表
         3. 本周学习计划（weeklyStudyContent）：1-2项
         4. 本周总结（weeklySummary）

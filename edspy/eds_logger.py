@@ -4,9 +4,9 @@ from datetime import date, timedelta
 
 from dotenv import load_dotenv
 
-from settings import Settings
-from log_content import LogContent
-from mimi import Mimi
+from edspy.settings import Settings
+from edspy.log_content import LogContent
+from edspy.mimi import Mimi
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -27,7 +27,7 @@ class EdsLogger:
         
     def run(self):
         """完成每周的周报和日报"""
-        self._set_driver()
+        self._add_driver()
 
         print("Run the logger")
         self._login()
@@ -37,7 +37,7 @@ class EdsLogger:
         self._prepped_data()
 
         # 填周报
-        self._weekly_log()
+        # self._weekly_log()
         time.sleep(2)
 
         # 开始填日报
@@ -85,7 +85,7 @@ class EdsLogger:
             print("调试中...")
         else:
             print("生产中...")
-        # self.driver.find_element(By.ID, "lblSubmit").click()
+            self.driver.find_element(By.ID, "lblSubmit").click()
 
         print('周报填写完成')
 
@@ -246,7 +246,7 @@ class EdsLogger:
         #     log_output="chromedriver_ssl_error.log",  # 日志输出到文件
         #     service_args=["--verbose"]             # 启用详细日志
         # )
-        if self.action:
+        if self.settings.action:
             service = Service(ChromeDriverManager().install()) # 网络不行
             
         self.driver = webdriver.Chrome(options=options, service=service) 

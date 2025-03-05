@@ -4,7 +4,7 @@ from pathlib import Path
 from datetime import date
 import re
 
-from eds_logger import EdsLogger
+from edspy.eds_logger import EdsLogger
 
 ## conftest 中处理了，这里可以省略
 # 将项目根目录添加到 sys.path
@@ -12,7 +12,7 @@ from eds_logger import EdsLogger
 # src_root = Path(__file__).parent.parent
 # sys.path.append(str(src_root))
 
-from log_content import LogContent
+from edspy.log_content import LogContent
 
 class TestLogContent:
 

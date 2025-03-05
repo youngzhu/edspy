@@ -1,4 +1,4 @@
-from eds_logger import EdsLogger
+from edspy.eds_logger import EdsLogger
 
 import time
 
