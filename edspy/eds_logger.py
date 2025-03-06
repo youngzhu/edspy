@@ -1,4 +1,3 @@
-import os
 import time
 from datetime import date, timedelta
 
@@ -170,8 +169,8 @@ class EdsLogger:
     
     def _login(self):
         """登录"""
-        user_id = os.getenv("USER_ID")
-        user_pwd = os.getenv("USER_PWD")
+        user_id = self.mimi.user_id
+        user_pwd = self.mimi.user_pwd
         # print("Login as user: " + userId)
         # print(self.settings.login_url
         self.driver.get(self.settings.login_url)
@@ -179,10 +178,12 @@ class EdsLogger:
         self.driver.find_element(By.ID, "UserPassword").send_keys(user_pwd)
         self.driver.find_element(By.ID, "btnSubmit").click()
 
+        print(f"{self.driver.current_url}")
+
         # 等待页面加载完成
-        # WebDriverWait(self.driver, 10).until(
-        #     EC.presence_of_element_located((By.ID, "lblWorkLog"))
-        # )
+        WebDriverWait(self.driver, 10).until(EC.url_contains("StffIndex.aspx"))
+        print(f"{self.driver.current_url}")
+        # time.sleep(200)
         print("登录成功！")
         
     def _add_driver(self):
