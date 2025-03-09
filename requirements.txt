@@ -1,0 +1,6 @@
+chinese_calendar==1.10.0
+openai==1.65.4
+pytest==8.3.5
+python-dotenv==1.0.1
+selenium==4.29.0
+webdriver_manager==4.0.2
