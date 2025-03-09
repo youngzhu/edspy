@@ -36,11 +36,11 @@ class EdsLogger:
         self._prepped_data()
 
         # 填周报
-        # self._weekly_log()
+        self._weekly_log()
         time.sleep(2)
 
         # 开始填日报
-        # self._daily_log()
+        self._daily_log()
 
     def _weekly_log(self):
         """填周报"""
@@ -49,7 +49,7 @@ class EdsLogger:
 
         # 周报填写日期：周一
         monday = date.today()
-        monday = date(2025, 3, 3)
+        # monday = date(2025, 3, 3)
         week_report_date = self.driver.find_element(By.ID, "WeekReportDate")
         week_report_date.clear()
         week_report_date.send_keys(str(monday))
@@ -248,7 +248,7 @@ class EdsLogger:
         #     service_args=["--verbose"]             # 启用详细日志
         # )
         if self.settings.action:
-            service = Service(ChromeDriverManager().install()) # 网络不行
+            service = Service(ChromeDriverManager().install()) # 本地执行，网络不行
             
         self.driver = webdriver.Chrome(options=options, service=service) 
         # 不用 driver 好像也可以啊
