@@ -36,8 +36,8 @@ class EdsLogger:
         self._prepped_data()
 
         # 填周报
-        self._weekly_log()
-        time.sleep(2)
+        # self._weekly_log()
+        # time.sleep(2)
 
         # 开始填日报
         self._daily_log()
@@ -141,7 +141,7 @@ class EdsLogger:
             retries = 3
             for i in range(retries):
                 try:
-                    start_time = WebDriverWait(self.driver, 10).until(
+                    start_time = WebDriverWait(self.driver, 15).until(
                         EC.presence_of_element_located((By.ID, "txtStartTime"))
                     )
                     break
@@ -248,6 +248,7 @@ class EdsLogger:
         #     service_args=["--verbose"]             # 启用详细日志
         # )
         if self.settings.action:
+            print("使用 DriverManager")
             service = Service(ChromeDriverManager().install()) # 本地执行，网络不行
             
         self.driver = webdriver.Chrome(options=options, service=service) 
