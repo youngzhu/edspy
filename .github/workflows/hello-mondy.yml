@@ -25,9 +25,6 @@ env:
 
   ACTION: True
 
-permissions:
-  contents: read
-
 jobs:
   build:
 
