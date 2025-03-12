@@ -4,6 +4,8 @@ from openai import OpenAI
 from random import choice
 from datetime import date
 
+from . import _logger
+
 DATA_DIR = Path(__file__).parent.parent / "data"
 
 class LogContent:
@@ -22,7 +24,9 @@ class LogContent:
     def get(self):
         """调大语言模型生成内容，如果失败则从本地获取"""
         try:
+            _logger.info("AI生成 start...")
             self._complete()
+            _logger.info("AI生成 end.")
         except Exception as e:
             print(f"调用大语言模型发生错误：{e}")
             self._default()

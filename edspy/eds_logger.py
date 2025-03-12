@@ -18,6 +18,8 @@ from selenium.common.exceptions import StaleElementReferenceException
 
 import chinese_calendar as calendar
 
+from . import _logger
+
 class EdsLogger:
     def __init__(self):
         load_dotenv()
@@ -28,7 +30,7 @@ class EdsLogger:
         """完成每周的周报和日报"""
         self._add_driver()
 
-        print("Run the logger")
+        _logger.info("Run the logger")
         self._login()
         time.sleep(1)
 
@@ -40,7 +42,7 @@ class EdsLogger:
         # time.sleep(2)
 
         # 开始填日报
-        self._daily_log()
+        # self._daily_log()
 
     def _weekly_log(self):
         """填周报"""
@@ -127,11 +129,11 @@ class EdsLogger:
                     btn_save.click()
 
                 except Exception as e:
-                    print(f"出现错误：{e}")
+                    _logger.error(f"出现错误：{e}")
                 
                 time.sleep(2)
 
-            print(f"{log_date} - 日志完成")
+            _logger.info(f"{log_date} - 日志完成")
 
     def _should_log(self, log_date):
         """ {log_date} 这天是否还需要填写日报"""
@@ -146,6 +148,7 @@ class EdsLogger:
                     )
                     break
                 except StaleElementReferenceException:
+                    _logger.info(f"retry {retries}...")
                     if i == retries - 1:
                         raise
             start_time_value = start_time.get_attribute("value")
@@ -178,13 +181,13 @@ class EdsLogger:
         self.driver.find_element(By.ID, "UserPassword").send_keys(user_pwd)
         self.driver.find_element(By.ID, "btnSubmit").click()
 
-        print(f"{self.driver.current_url}")
+        # print(f"{self.driver.current_url}")
 
         # 等待页面加载完成
         WebDriverWait(self.driver, 10).until(EC.url_contains("StffIndex.aspx"))
-        print(f"{self.driver.current_url}")
+        # print(f"{self.driver.current_url}")
         # time.sleep(200)
-        print("登录成功！")
+        _logger.info("登录成功！")
         
     def _add_driver(self):
         """添加WebDriver
