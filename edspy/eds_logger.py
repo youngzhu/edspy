@@ -46,8 +46,7 @@ class EdsLogger:
 
     def _weekly_log(self):
         """填周报"""
-        # self.driver.find_element(By.ID, "lblWorkLog").click()
-        self.driver.get("http://eds.newtouch.cn/eds36web/WorkWeekly/WorkWeeklyInfo.aspx")
+        self.driver.get(self.settings.weekly_url)
 
         # 周报填写日期：周一
         monday = date.today()
@@ -92,8 +91,7 @@ class EdsLogger:
 
     def _daily_log(self):
         # print(f'日报内容：{self.logContent.daily()}')
-        # self.driver.get(self.settings.daily_url)
-        self.driver.get("http://eds.newtouch.cn/eds3/worklog.aspx")
+        self.driver.get(self.settings.daily_url)
 
         # 填7天
         log_date = date.today()
