@@ -38,11 +38,11 @@ class EdsLogger:
         self._prepped_data()
 
         # 填周报
-        # self._weekly_log()
-        # time.sleep(2)
+        self._weekly_log()
+        time.sleep(2)
 
         # 开始填日报
-        # self._daily_log()
+        self._daily_log()
 
     def _weekly_log(self):
         """填周报"""
@@ -172,17 +172,19 @@ class EdsLogger:
         """登录"""
         user_id = self.mimi.user_id
         user_pwd = self.mimi.user_pwd
-        # print("Login as user: " + userId)
-        # print(self.settings.login_url
         self.driver.get(self.settings.login_url)
+
+        btn = WebDriverWait(self.driver, self.settings.timeout).until(
+            EC.presence_of_element_located((By.ID, "btnSubmit"))
+        )
         self.driver.find_element(By.ID, "UserId").send_keys(user_id)
         self.driver.find_element(By.ID, "UserPassword").send_keys(user_pwd)
-        self.driver.find_element(By.ID, "btnSubmit").click()
+        btn.click()
 
         # print(f"{self.driver.current_url}")
 
         # 等待页面加载完成
-        WebDriverWait(self.driver, 10).until(EC.url_contains("StffIndex.aspx"))
+        WebDriverWait(self.driver, self.settings.timeout).until(EC.url_contains("StffIndex.aspx"))
         # print(f"{self.driver.current_url}")
         # time.sleep(200)
         _logger.info("登录成功！")
@@ -194,9 +196,12 @@ class EdsLogger:
         """
         # options = webdriver.ChromeOptions()
         options = Options()
-        options.add_argument("--headless=new")
+        # options.add_argument("--headless=new")
 
+        # 解决了握手问题，又有其他问题。。。
         # options.add_argument('--ignore-certificate-errors')
+        # options.add_argument('--disable-cache')            # 禁用缓存
+
         # options.add_argument('--ignore-ssl-errors')
         # options.add_argument('--allow-insecure-localhost')  # 允许本地不安全的连接
         # options.add_argument("--disable-extensions")  # 禁用扩展
@@ -249,7 +254,7 @@ class EdsLogger:
         #     service_args=["--verbose"]             # 启用详细日志
         # )
         if self.settings.action:
-            print("使用 DriverManager")
+            _logger.info("使用 DriverManager")
             service = Service(ChromeDriverManager().install()) # 本地执行，网络不行
             
         self.driver = webdriver.Chrome(options=options, service=service) 

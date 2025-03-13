@@ -10,3 +10,5 @@ class Settings:
 
         self.debugging = os.getenv("DEBUGGING")
         self.action = os.getenv("ACTION")
+
+        self.timeout = 20 # 等待元素出现的超时设置
