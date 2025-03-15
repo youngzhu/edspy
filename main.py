@@ -11,9 +11,9 @@ if __name__ == '__main__':
 
     try:
         app.run()
-        # mail.send(f"{today}成功", "RT")
+        mail.send(f"{today}成功", "RT")
     except Exception as e:
         _logger.error(f"异常：{e}")
-        _logger.error(f"异常：{e.with_traceback}")
-        # mail.send(f"{today}失败", f"错误：\n{str(e)}")
+        # _logger.error(f"异常：{e.with_traceback}")
+        mail.send(f"{today}失败", f"错误：\n{str(e)}")
         # pass
