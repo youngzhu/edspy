@@ -82,12 +82,12 @@ class EdsLogger:
                                 
         # 提交
         if self.settings.debugging:
-            print("调试中...")
+            _logger.info("调试中...")
         else:
-            print("生产中...")
+            _logger.info("生产中...")
             self.driver.find_element(By.ID, "lblSubmit").click()
 
-        print('周报填写完成')
+        _logger.info('周报填写完成')
 
     def _daily_log(self):
         # print(f'日报内容：{self.logContent.daily()}')
@@ -117,7 +117,7 @@ class EdsLogger:
             # self.driver.find_element(By.ID, "txtMemo").send_keys(memo)
             # self.driver.find_element(By.ID, "btnSave").click()
             for _ in range(2):
-                btn_save = WebDriverWait(self.driver, 10).until(
+                btn_save = WebDriverWait(self.driver, self.settings.timeout).until(
                     EC.presence_of_element_located((By.ID, "btnSave"))
                 )
 
@@ -127,11 +127,11 @@ class EdsLogger:
                     btn_save.click()
 
                 except Exception as e:
-                    _logger.error(f"出现错误：{e}")
+                    _logger.error(f"日报{log_date}出现错误：{e}")
                 
                 time.sleep(2)
 
-            _logger.info(f"{log_date} - 日志完成")
+            _logger.info(f"{log_date} - 日报完成")
 
     def _should_log(self, log_date):
         """ {log_date} 这天是否还需要填写日报"""
@@ -141,7 +141,7 @@ class EdsLogger:
             retries = 3
             for i in range(retries):
                 try:
-                    start_time = WebDriverWait(self.driver, 15).until(
+                    start_time = WebDriverWait(self.driver, self.settings.timeout).until(
                         EC.presence_of_element_located((By.ID, "txtStartTime"))
                     )
                     break
@@ -150,7 +150,7 @@ class EdsLogger:
                     if i == retries - 1:
                         raise
             start_time_value = start_time.get_attribute("value")
-            print(f"{log_date}: {start_time_value}")
+            # print(f"{log_date}: {start_time_value}")
             
             if start_time_value:
                 return True
@@ -196,7 +196,7 @@ class EdsLogger:
         """
         # options = webdriver.ChromeOptions()
         options = Options()
-        # options.add_argument("--headless=new")
+        options.add_argument("--headless=new")
 
         # 解决了握手问题，又有其他问题。。。
         # options.add_argument('--ignore-certificate-errors')
