@@ -34,15 +34,16 @@ class EdsLogger:
         self._login()
         time.sleep(1)
 
-        # 准备周报的数据
-        self._prepped_data()
+        if not self.settings.debugging:
+            # 准备周报的数据
+            self._prepped_data()
 
-        # 填周报
-        self._weekly_log()
-        time.sleep(2)
+            # 填周报
+            self._weekly_log()
+            time.sleep(2)
 
-        # 开始填日报
-        self._daily_log()
+            # 开始填日报
+            self._daily_log()
 
     def _weekly_log(self):
         """填周报"""

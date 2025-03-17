@@ -1,0 +1,27 @@
+# logging_config.yaml
+version: 1
+disable_existing_loggers: False
+formatters:
+  china_formatter:
+    (): logging_formatter.ChinaTimezoneFormatter
+    fmt: "%(asctime)s | %(levelname)-8s | %(name)s | %(message)s"
+    datefmt: "%Y-%m-%d %H:%M:%S"
+handlers:
+  console:
+    class: logging.StreamHandler
+    formatter: china_formatter
+    level: INFO
+  file:
+    class: logging.FileHandler
+    filename: "app.log"
+    formatter: china_formatter
+    level: INFO
+    encoding: utf-8
+loggers:
+  edspy:
+    handlers: [file]
+    level: INFO
+    # propagate: False # 阻止日志传播到 root
+root:
+  handlers: [console]
+  level: INFO
