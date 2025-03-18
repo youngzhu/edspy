@@ -10,7 +10,12 @@ from pathlib import Path
 # sys.path.append(str(src_root))
 
 from edspy.eds_logger import EdsLogger
+from edspy.eds_reportor import EdsReportor
 
 @pytest.fixture
 def eds_logger():
     return EdsLogger()
+
+@pytest.fixture
+def eds_reportor():
+    return EdsReportor()
