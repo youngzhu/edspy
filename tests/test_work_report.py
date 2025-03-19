@@ -14,13 +14,23 @@ def test_get_work_report_from_file():
     assert work_report is not None
     assert len(work_report.work_plan) > 0 
 
+import pytest
+
+@pytest.fixture
+def work_report_local():
+    """为方便测试，返回一个从本地文件获取内容的 WorkReport 实例"""
+    return get_work_report(eds_reportor=None)
 
 class TestWorkReport:
-    def test_work_plans(self):
+    def test_work_plans(self, work_report_local):
         """测试字符串形式的工作计划"""
-        work_report = get_work_report(eds_reportor=None)
-        work_plans = work_report.work_plans()
+        work_plans = work_report_local.work_plans()
 
         pattern = r"1\. .*\n2\. .*"
         # assert '\n' in work_report.work_plans()
         assert re.match(pattern, work_plans), f"工作计划 '{work_plans}' 不符合模式 '1. xxx\\n2. xxx'"
+
+    def test_daily_work_report(self, work_report_local):
+        """测试获取日报内容函数"""
+        daily = work_report_local.daily_work_report()
+        assert daily in work_report_local.work_plan

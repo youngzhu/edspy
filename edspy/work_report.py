@@ -35,7 +35,13 @@ class WorkReport:
 
     def work_plans(self):
         """以文本形式返回本周工作计划
-        学某些函数，s代表str"""
+        学某些函数，s代表str
+        
+        返回类似：
+        1. Task 1
+        2. Task 2
+        3. Task 3
+        """
         # return '\n'.join(self.work_plan)
         # result = ''
         # for i, plan in enumerate(self.work_plan):
@@ -43,6 +49,11 @@ class WorkReport:
         result = "\n".join(f"{i+1}. {plan}" for i, plan in enumerate(self.work_plan))
 
         return result
+
+    def daily_work_report(self):
+        """获取日报内容
+        从工作计划中随机取一条"""
+        return choice(self.work_plan)
 
 
 
