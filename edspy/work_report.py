@@ -6,6 +6,7 @@
 """
 from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json, config
+from random import choice
 
 @dataclass_json
 @dataclass(frozen=True)
@@ -31,6 +32,19 @@ class WorkReport:
     study_plan: str = field(
         metadata=config(field_name="studyPlan")
     ) 
+
+    def work_plans(self):
+        """以文本形式返回本周工作计划
+        学某些函数，s代表str"""
+        # return '\n'.join(self.work_plan)
+        # result = ''
+        # for i, plan in enumerate(self.work_plan):
+        #     result += f"{str(i+1)}. {plan}\n"
+        result = "\n".join(f"{i+1}. {plan}" for i, plan in enumerate(self.work_plan))
+
+        return result
+
+
 
 from . import _logger
 
@@ -64,6 +78,7 @@ def _complete(eds_reportor):
     1. 不要出现具体的周几或星期几
     2. 3-5 表示一个随机的数值范围 [3, 5]
     3. 不要出现JDK的版本
+    4. 不要出现技术分享会
     
     包含以下内容（其中多项不需要列表，要有序号，用换行符分割）：
     1. 上周工作任务完成情况（lastWeekWorkContent）：3-5条内容
@@ -98,8 +113,18 @@ def _complete(eds_reportor):
 from pathlib import Path
 DATA_DIR = Path(__file__).parent.parent / "data"
 
+import re
+
 def _load_from_file():
     """从本地文件中读取"""
+    start_with = re.compile(r'^work-report.*')  # 匹配以 work-report 开头的文件名
+    files = [file for file in DATA_DIR.iterdir() if start_with.match(file.name) and file.is_file()]
+    random_file = choice(files)
+    _logger.info(f"读取的本地文件：{random_file.name}")
+
+    # 读取文件
+    json_data = random_file.read_text(encoding="utf-8")
+    return WorkReport.from_json(json_data)
 
 from datetime import date
 
