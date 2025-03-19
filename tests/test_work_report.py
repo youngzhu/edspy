@@ -14,12 +14,13 @@ def test_get_work_report_from_file():
     assert work_report is not None
     assert len(work_report.work_plan) > 0 
 
-import pytest
+from datetime import date
 
-@pytest.fixture
-def work_report_local():
-    """为方便测试，返回一个从本地文件获取内容的 WorkReport 实例"""
-    return get_work_report(eds_reportor=None)
+def test_file_name():
+        file_name = f"work-report-{date.today()}.json"
+        pattern = re.compile(r"work-report-\d{4}-\d{2}-\d{2}.json")
+        assert pattern.match(file_name)
+
 
 class TestWorkReport:
     def test_work_plans(self, work_report_local):
