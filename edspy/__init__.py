@@ -1,6 +1,8 @@
 __version__ = "0.1.0"
 __author__ = "youngzy"
 
+from dotenv import load_dotenv
+load_dotenv()
 
 from pathlib import Path
 import sys

@@ -10,7 +10,18 @@ from pathlib import Path
 # sys.path.append(str(src_root))
 
 from edspy.eds_logger import EdsLogger
+from edspy.eds_reportor import EdsReportor, get_work_report
 
 @pytest.fixture
 def eds_logger():
     return EdsLogger()
+
+@pytest.fixture
+def eds_reportor():
+    return EdsReportor()
+
+
+@pytest.fixture
+def work_report_local():
+    """为方便测试，返回一个从本地文件获取内容的 WorkReport 实例"""
+    return get_work_report(eds_reportor=None)
