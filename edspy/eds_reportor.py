@@ -68,7 +68,7 @@ class EdsReportor:
             self.driver.find_element(By.ID, "btnnext").click()
             report_date = report_date + timedelta(days=1)
     
-    def _do_daily_log(self, report_date):
+    def _do_daily_report(self, report_date):
         """填日报"""
         if self._should_report(report_date):
             memo = self.work_report.daily_work_report()
@@ -81,19 +81,19 @@ class EdsReportor:
             # self.driver.find_element(By.ID, "txtMemo").send_keys(memo)
             # self.driver.find_element(By.ID, "btnSave").click()
             for member in AMPM:
-                btn_save = WebDriverWait(self.driver, self.settings.timeout).until(
-                    EC.presence_of_element_located((By.ID, "btnSave"))
-                )
-
                 try:
+                    # TODO 如果还是不行，可以试试获取具体时间
+                    WebDriverWait(self.driver, self.settings.timeout).until(
+                        EC.presence_of_element_located((By.ID, "txtStartTime"))
+                    )
                     self.driver.find_element(By.ID, "txtMemo").send_keys(memo)
-                    # self.driver.find_element(By.ID, "btnSave").click()
-                    btn_save.click()
+                    self.driver.find_element(By.ID, "btnSave").click()
+                    # btn_save.click()
 
                 except Exception as e:
                     _logger.error(f"日报{report_date} {member.value} 出现错误：{e}")
                 
-                time.sleep(1)
+                time.sleep(2)
 
             _logger.info(f"{report_date} - 日报完成")
 

@@ -1,10 +1,12 @@
 from edspy.eds_logger import EdsLogger, _logger
+from edspy.eds_reportor import EdsReportor
 from edspy.mail import Mail
 from datetime import date
 
 
 if __name__ == '__main__':
-    app = EdsLogger()
+    # app = EdsLogger()
+    app = EdsReportor()
     mail = Mail(app)
 
     today = date.today()
