@@ -58,6 +58,7 @@ class WorkReport:
 
 
 from . import _logger
+import time
 
 def get_work_report(eds_reportor):
     """获取周报内容对象
@@ -66,8 +67,10 @@ def get_work_report(eds_reportor):
     """
     try:
         _logger.info("AI生成 start...")
+        start = time.perf_counter()
         work_report = _complete(eds_reportor)
-        _logger.info("AI生成 end.")
+        elapsed = time.perf_counter() - start
+        _logger.info("AI生成 end. 耗时 {elapsed:0.3f}s")
     except Exception as e:
         _logger.error(f"调用大语言模型发生错误：{e}")
         work_report = _load_from_file()
