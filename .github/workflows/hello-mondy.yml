@@ -24,11 +24,11 @@ env:
   # OPEN_AI_MODEL=deepseek-reasoner
 
   ## 邮件
-  SENDER=${{ secrets.SENDER }}
-  SENDER_USERNAME=${{ secrets.SENDER_USERNAME }}
-  SENDER_PASSWD=${{ secrets.SENDER_PASSWD }}
+  SENDER: ${{ secrets.SENDER }}
+  SENDER_USERNAME: ${{ secrets.SENDER_USERNAME }}
+  SENDER_PASSWD: ${{ secrets.SENDER_PASSWD }}
   
-  RECEIVER=${{ secrets.RECEIVER }}
+  RECEIVER: ${{ secrets.RECEIVER }}
 
   ACTION: True
 
