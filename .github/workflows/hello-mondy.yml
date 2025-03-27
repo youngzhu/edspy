@@ -23,6 +23,13 @@ env:
   # R1 不能理解 要列表，和不要列表
   # OPEN_AI_MODEL=deepseek-reasoner
 
+  ## 邮件
+  SENDER=${{ secrets.SENDER }}
+  SENDER_USERNAME=${{ secrets.SENDER_USERNAME }}
+  SENDER_PASSWD=${{ secrets.SENDER_PASSWD }}
+  
+  RECEIVER=${{ secrets.RECEIVER }}
+
   ACTION: True
 
 jobs:
