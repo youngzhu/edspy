@@ -70,7 +70,7 @@ def get_work_report(eds_reportor):
         start = time.perf_counter()
         work_report = _complete(eds_reportor)
         elapsed = time.perf_counter() - start
-        _logger.info("AI生成 end. 耗时 {elapsed:0.3f}s")
+        _logger.info(f"AI生成 end. 耗时 {elapsed:0.3f}s")
     except Exception as e:
         _logger.error(f"调用大语言模型发生错误：{e}")
         work_report = _load_from_file()
@@ -85,8 +85,7 @@ from openai import OpenAI
 def _complete(eds_reportor):
     """调大语言模型生成内容"""
     prompt = f"""
-    我是个后端开发人员，开发语言以Java为主，目前参与开发的是保险业务系统，负责承保和批改模块，和理赔模块无关。
-    最近在学习Python和大语言模型。
+    我是个后端开发人员，开发语言以Java为主，目前参与开发的是寿险一站式服务系统，还在了解学习阶段。
     请以JSON格式返回一个周报。
     要求：
     1. 不要出现具体的周几或星期几
