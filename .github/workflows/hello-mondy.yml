@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
   schedule:
-    - cron: "20 0 * * Mon"
+    - cron: "1 0 * * Mon"
 
 env:
   USER_ID: ${{ secrets.USER_ID }}

@@ -35,10 +35,10 @@ class EdsReportor:
         """完成每周的周报和日报"""
         _logger.info("Run the logger")
         
-        self._add_driver()
+        # self._add_driver()
 
-        self._login()
-        time.sleep(5)
+        # self._login()
+        # time.sleep(5)
 
         if self.settings.debugging:
             _logger.info("调试中...")
@@ -48,11 +48,11 @@ class EdsReportor:
             self._prepped_data()
 
             # 填周报
-            self._weekly_report()
-            time.sleep(2)
+            # self._weekly_report()
+            # time.sleep(2)
 
             # 开始填日报
-            self._daily_report()
+            # self._daily_report()
 
     def _daily_report(self):
         # print(f'日报内容：{self.logContent.daily()}')
