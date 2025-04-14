@@ -55,6 +55,17 @@ class WorkReport:
         从工作计划中随机取一条"""
         return choice(self.work_plan)
 
+    def check(self):
+        """检查生成的内容。
+        如果规则都满足，则返回 True
+        否则，返回 False
+        """
+        # 工作计划列表长度应该在 3-5
+        if not (3 <= len(self.work_plan) <= 5):
+            return False
+
+        return True
+
 
 
 from . import _logger
@@ -108,21 +119,32 @@ def _complete(eds_reportor):
         base_url=eds_reportor.mimi.open_ai_base_url
     )
 
-    response = client.chat.completions.create(
-        model=eds_reportor.mimi.open_ai_model,
-        messages=[
-            # 有或没有，差别不大啊，不清楚这个作用是什么？
-            #{"role": "system", "content": "You are a helpful assistant"},
-            #{"role": "system", "content": "你是一个KPI完成高手"},
-            {"role": "system", "content": "你是一个写报告的小行家"},
-            {"role": "user", "content": prompt},
-        ],
-        temperature=1.5,
-        stream=False
-    ).choices[0].message.content
+    retries = 3 # 多尝试几次，还是不行则抛异常
+    for i in range(retries):
+        response = client.chat.completions.create(
+            model=eds_reportor.mimi.open_ai_model,
+            messages=[
+                # 有或没有，差别不大啊，不清楚这个作用是什么？
+                #{"role": "system", "content": "You are a helpful assistant"},
+                #{"role": "system", "content": "你是一个KPI完成高手"},
+                {"role": "system", "content": "你是一个写报告的小行家"},
+                {"role": "user", "content": prompt},
+            ],
+            temperature=1.5,
+            stream=False
+        ).choices[0].message.content
 
-    cleaned_json = response.replace('```json', '').replace('```', '').strip()
-    return WorkReport.from_json(cleaned_json)
+        cleaned_json = response.replace('```json', '').replace('```', '').strip()
+        result = WorkReport.from_json(cleaned_json)
+        if result.check():
+            break
+        else:
+            _logger.error('生成的数据不合规')
+
+        if i == retries - 1:
+            raise ValueError(f'尝试了{retries}次，生成的内容还是不合规')
+
+    return result 
 
 
 from pathlib import Path
