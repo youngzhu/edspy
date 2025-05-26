@@ -19,7 +19,7 @@ env:
   OPEN_AI_API_KEY: ${{ secrets.OPEN_AI_API_KEY }}
   # deepseek-reasoner 是 DeepSeek 最新推出的推理模型 DeepSeek-R1
   # deepseek-chat 模型已全面升级为 DeepSeek-V3
-  OPEN_AI_MODEL: deepseek-chat
+  OPEN_AI_MODEL: ${{ secrets.OPEN_AI_MODEL }}
   # R1 不能理解 要列表，和不要列表
   # OPEN_AI_MODEL=deepseek-reasoner
 
