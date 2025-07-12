@@ -17,7 +17,10 @@ sys.path.append(str(src_root))
 import logging.config
 import yaml
 
-with open("logging_config.yaml", encoding="utf-8") as f:
+# 获取项目根目录（假设配置文件在根目录下）
+PROJECT_ROOT = Path(__file__).parent.parent
+config_path = PROJECT_ROOT / "logging_config.yaml"
+with open(config_path, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
 logging.config.dictConfig(config)
 _logger = logging.getLogger(__name__)

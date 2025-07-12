@@ -9,12 +9,7 @@ from pathlib import Path
 # src_root = Path(__file__).parent.parent
 # sys.path.append(str(src_root))
 
-from edspy.eds_logger import EdsLogger
 from edspy.eds_reportor import EdsReportor, get_work_report
-
-@pytest.fixture
-def eds_logger():
-    return EdsLogger()
 
 @pytest.fixture
 def eds_reportor():
