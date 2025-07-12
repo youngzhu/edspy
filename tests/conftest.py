@@ -20,3 +20,7 @@ def eds_reportor():
 def work_report_local():
     """为方便测试，返回一个从本地文件获取内容的 WorkReport 实例"""
     return get_work_report(eds_reportor=None)
+
+@pytest.fixture
+def work_report_llm(eds_reportor):
+    return get_work_report(eds_reportor=eds_reportor)

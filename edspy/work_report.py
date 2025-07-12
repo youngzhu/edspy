@@ -50,6 +50,11 @@ class WorkReport:
 
         return result
 
+    def last_week_work_contents(self):
+        """学某些函数，s代表str
+        """
+        return self.last_week_work_content
+
     def daily_work_report(self):
         """获取日报内容
         从工作计划中随机取一条"""

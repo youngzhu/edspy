@@ -23,15 +23,26 @@ def test_file_name():
 
 
 class TestWorkReport:
-    def test_work_plans(self, work_report_local):
+    def test_work_plans(self, work_report_llm):
         """测试字符串形式的工作计划"""
-        work_plans = work_report_local.work_plans()
+        work_plans = work_report_llm.work_plans()
 
         pattern = r"1\. .*\n2\. .*"
         # assert '\n' in work_report.work_plans()
         assert re.match(pattern, work_plans), f"工作计划 '{work_plans}' 不符合模式 '1. xxx\\n2. xxx'"
 
-    def test_daily_work_report(self, work_report_local):
+    def test_daily_work_report(self, work_report_llm):
         """测试获取日报内容函数"""
-        daily = work_report_local.daily_work_report()
-        assert daily in work_report_local.work_plan
+        daily = work_report_llm.daily_work_report()
+        assert daily in work_report_llm.work_plan
+
+    def test_last_week_work_report(self, work_report_llm):
+        """测试数据格式
+        有序号
+        不要有[]
+        """
+        last_week_work_content = work_report_llm.last_week_work_contents()
+
+        pattern = r"1\. .*\n2\. .*"
+        # assert '\n' in work_report.work_plans()
+        assert re.match(pattern, last_week_work_content), f"上周工作内容 '{last_week_work_content}' 不符合模式 '1. xxx\\n2. xxx'"
