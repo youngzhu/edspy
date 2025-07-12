@@ -107,7 +107,7 @@ def _complete(eds_reportor):
     4. 不要出现技术分享会
     5. 学习内容以技术为主
     
-    包含以下内容（其中多项不需要列表，要有序号，用换行符分割）：
+    包含以下内容（其中多项不需要列表，要有序号，用换行符分割，以句号结尾）：
     1. 上周工作任务完成情况（lastWeekWorkContent）：3-5条内容，要有序号，不要列表
     2. 上周学习完成任务情况（lastWeekStudyContent）：3-5项
     3. 经验和收获总结（lastWeekSummary）
@@ -128,7 +128,7 @@ def _complete(eds_reportor):
                 # 有或没有，差别不大啊，不清楚这个作用是什么？
                 #{"role": "system", "content": "You are a helpful assistant"},
                 #{"role": "system", "content": "你是一个KPI完成高手"},
-                {"role": "system", "content": "你是一个写报告的小行家"},
+                {"role": "system", "content": "你是一个写报告的能手。"},
                 {"role": "user", "content": prompt},
             ],
             temperature=1.5,
