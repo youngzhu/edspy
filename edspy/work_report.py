@@ -96,7 +96,7 @@ from openai import OpenAI
 def _complete(eds_reportor):
     """调大语言模型生成内容"""
     prompt = f"""
-    我是个后端开发人员，开发语言以Java为主，目前参与开发的是寿险营运一站式服务平台，负责保全退保模块。
+    我是个后端开发人员，开发语言以Java为主，目前参与开发的是寿险营运一站式服务平台，负责保全解除合同模块，包括犹豫撤保和退保。
     不要出现重构、优化等字眼，还在学习。
     数据库用的少，不要提到数据库。
     请以JSON格式返回一个周报。
@@ -108,7 +108,7 @@ def _complete(eds_reportor):
     5. 学习内容以技术为主
     
     包含以下内容（其中多项不需要列表，要有序号，用换行符分割）：
-    1. 上周工作任务完成情况（lastWeekWorkContent）：3-5条内容
+    1. 上周工作任务完成情况（lastWeekWorkContent）：3-5条内容，要有序号，不要列表
     2. 上周学习完成任务情况（lastWeekStudyContent）：3-5项
     3. 经验和收获总结（lastWeekSummary）
     4. 本周学习计划（studyPlan）：1-2项
