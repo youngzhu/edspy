@@ -175,8 +175,18 @@ from datetime import date
 
 def _write_to_file(work_report):
     """将大语言模型生成的内容存入本地"""
-    file_name = f"work-report-{str(date.today())}.json"
-    json_file = DATA_DIR / file_name
+    today = date.today()
+
+    # 当前年份
+    current_year = str(today.year)
+    year_dir = DATA_DIR / current_year
+    # 如果不存在，则创建文件夹
+    # 如果存在，也不报错
+    year_dir.mkdir(parents=True, exist_ok=True)
+
+    # 文件
+    file_name = f"work-report-{str(today)}.json"
+    json_file = year_dir / file_name
     json_file.write_text(
         work_report.to_json(ensure_ascii=False, indent=4), 
         encoding='utf-8',
