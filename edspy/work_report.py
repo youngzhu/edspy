@@ -101,7 +101,7 @@ from openai import OpenAI
 def _complete(eds_reportor):
     """调大语言模型生成内容"""
     prompt = f"""
-    我是个后端开发，开发语言以Java为主，目前参与的项目是寿险营运一站式服务平台，负责保全撤退减保模块，包括犹豫撤保和退保。
+    你是程序员，开发语言以Java为主，目前参与的项目是营运一站式服务平台，负责撤退减保模块，包括犹豫撤保、减保和退保。
     有时候会上一些新产品，需要根据业务场景做开发。
     数据库用的少，不要提到数据库。SQL写的也不多，使用MyBatis组件。
     使用Spring Boot组件。
@@ -133,9 +133,9 @@ def _complete(eds_reportor):
             model=eds_reportor.mimi.open_ai_model,
             messages=[
                 # 有或没有，差别不大啊，不清楚这个作用是什么？
-                #{"role": "system", "content": "You are a helpful assistant"},
+                {"role": "system", "content": "You are a helpful assistant"},
                 #{"role": "system", "content": "你是一个KPI完成高手"},
-                {"role": "system", "content": "你是一个写报告的能手。"},
+                # {"role": "system", "content": "你是一个写报告的能手。"},
                 {"role": "user", "content": prompt},
             ],
             temperature=1.5,
