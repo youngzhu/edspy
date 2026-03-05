@@ -98,14 +98,22 @@ def get_work_report(eds_reportor):
 
 from openai import OpenAI
 
-def _complete(eds_reportor):
-    """调大语言模型生成内容"""
-    prompt = f"""
-    你是程序员，开发语言以Java为主，目前参与的项目是营运一站式服务平台，负责撤退减保模块，包括犹豫撤保、减保和退保。
+prompt_by_project = {
+    "new_proj": """刚进入新的项目组，负责健康险直付业务。
+    请自由发挥。""",
+
+    # 一站式
+    "yyyzs": """你是程序员，开发语言以Java为主，目前参与的项目是营运一站式服务平台，负责撤退减保模块，包括犹豫撤保、减保和退保。
     有时候会上一些新产品，需要根据业务场景做开发。
     数据库用的少，不要提到数据库。SQL写的也不多，使用MyBatis组件。
     使用Spring Boot组件。
-    缓存使用 Redis。
+    缓存使用 Redis。"""
+}
+
+def _complete(eds_reportor):
+    """调大语言模型生成内容"""
+    prompt = f"""{prompt_by_project[eds_reportor.settings.project_name]}
+    
     请以JSON格式返回一个周报。
     要求：
     1. 不要出现具体的周几或星期几
