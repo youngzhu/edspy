@@ -92,7 +92,7 @@ def get_work_report(eds_reportor):
         work_report = _load_from_file()
     else:
         # 更新本地数据
-        _write_to_file(work_report)
+        _write_to_file(work_report, eds_reportor.settings.project_name)
 
     return work_report
 
@@ -173,13 +173,13 @@ def _load_from_file():
 
 from datetime import date
 
-def _write_to_file(work_report):
+def _write_to_file(work_report, project_name):
     """将大语言模型生成的内容存入本地"""
     today = date.today()
 
     # 当前年份
     current_year = str(today.year)
-    year_dir = DATA_DIR / current_year
+    year_dir = DATA_DIR / current_year / project_name
     # 如果不存在，则创建文件夹
     # 如果存在，也不报错
     year_dir.mkdir(parents=True, exist_ok=True)

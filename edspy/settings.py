@@ -8,6 +8,8 @@ class Settings:
         self.daily_url = "http://eds.newtouch.cn/eds3/worklog.aspx"
         self.weekly_url = "http://eds.newtouch.cn/eds36web/WorkWeekly/WorkWeeklyInfo.aspx"
 
+        self.project_name = "yyyzs" # 营运一站式
+
         self.debugging = os.getenv("DEBUGGING")
         self.action = os.getenv("ACTION")
 
