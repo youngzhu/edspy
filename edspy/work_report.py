@@ -146,7 +146,7 @@ def _complete(eds_reportor):
                 # {"role": "system", "content": "你是一个写报告的能手。"},
                 {"role": "user", "content": prompt},
             ],
-            temperature=1.5,
+            temperature=0.8,
             stream=False
         ).choices[0].message.content
 
