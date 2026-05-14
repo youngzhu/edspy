@@ -9,7 +9,8 @@ class Settings:
         self.weekly_url = "http://eds.newtouch.cn/eds36web/WorkWeekly/WorkWeeklyInfo.aspx"
 
         # self.project_name = "new_proj" # 测试
-        self.project_name = "yyyzs" # 营运一站式
+        # self.project_name = "yyyzs" # 营运一站式
+        self.project_name = "ai_agent" # 投诉系统AI智能体
 
         self.debugging = os.getenv("DEBUGGING")
         self.action = os.getenv("ACTION")
