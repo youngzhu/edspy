@@ -105,10 +105,9 @@ prompt_by_project = {
 
     # AI智能体
     "ai_agent": """系统名称：消费者权益保护管理系统-投诉智能问答助手。归属于寿险项目。
-    我的主要工作是给开发AI智能体的同事提供必要的业务数据。
-    系统架构：Java 17 + Spring Boot 3.5.14 + Redis（缓存）
+    系统架构：Java 17 + Spring Boot 3.5 + Redis（缓存）
     使用的开发语言是Java，且跟AI开发无关，所以不要出现向量数据库、数据清洗等跟AI相关的术语。
-    主要工作：对接新的数据接口
+    主要工作：通过HTTP请求外部系统获取相关业务数据
     """,
 
     # 一站式
@@ -163,8 +162,10 @@ def _complete(eds_reportor):
             # > 1.2	狂野模式
             #
             # 0.3 在提示词不变的情况下，太雷同了
-            temperature=0.3,
-            stream=False
+            temperature=0.7,
+            top_p=0.9,
+            # top_k=50,
+            stream=False,
         ).choices[0].message.content
 
         cleaned_json = response.replace('```json', '').replace('```', '').strip()
