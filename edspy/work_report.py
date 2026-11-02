@@ -98,45 +98,10 @@ def get_work_report(eds_reportor):
 
 from openai import OpenAI
 
-prompt_by_project = {
-    # 新项目
-    "new_proj": """刚进入新的项目组，负责健康险直付业务。
-    请自由发挥。""",
-
-    # AI智能体
-    "ai_agent": """系统名称：消费者权益保护管理系统-投诉智能问答助手。归属于寿险项目。
-    系统架构：Java 17 + Spring Boot 3.5 + Redis（用作缓存）
-    使用的开发语言是Java，且跟AI开发无关，所以不要出现向量数据库、数据清洗等跟AI相关的术语。
-    主要工作：通过HTTP post请求外部系统（如保单中心/自然人/客户中心等）获取相关业务数据，并提供相关接口给AI开发的同事提供数据。
-    """,
-
-    # 一站式
-    "yyyzs": """你是程序员，开发语言以Java为主，目前参与的项目是营运一站式服务平台，负责撤退减保模块，包括犹豫撤保、减保和退保。
-    有时候会上一些新产品，需要根据业务场景做开发。
-    数据库用的少，不要提到数据库。SQL写的也不多，使用MyBatis组件。
-    使用Spring Boot组件。
-    缓存使用 Redis。"""
-}
-
 def _complete(eds_reportor):
     """调大语言模型生成内容"""
-    prompt = f"""{prompt_by_project[eds_reportor.settings.project_name]}
-    
-    请以JSON格式返回一个周报。
-    要求：
-    1. 不要出现具体的周几或星期几
-    2. 3-5 表示一个随机的数值范围 [3, 5]
-    3. 不要出现JDK的版本
-    4. 不要出现技术分享会
-    5. 学习内容以技术为主
-    
-    包含以下内容（其中多项不需要列表，要有序号，用换行符分割，以句号结尾）：
-    1. 上周工作任务完成情况（lastWeekWorkContent）：3-5条内容，要有序号，不要列表
-    2. 上周学习完成任务情况（lastWeekStudyContent）：3-5项
-    3. 经验和收获总结（lastWeekSummary）
-    4. 本周学习计划（studyPlan）：1-2项
-    5. 本周工作计划与重点（workPlan）：以列表形式返回3-5项，不要序号
-    """
+    system_prompt = Path("prompts/system.md").read_text(encoding="utf-8")
+    user_prompt = Path(f"projects/{eds_reportor.settings.project_name}.txt").read_text(encoding="utf-8")
 
     client = OpenAI(
         api_key=eds_reportor.mimi.open_ai_api_key, 
@@ -149,10 +114,11 @@ def _complete(eds_reportor):
             model=eds_reportor.mimi.open_ai_model,
             messages=[
                 # 有或没有，差别不大啊，不清楚这个作用是什么？
-                {"role": "system", "content": "You are a helpful assistant"},
+                {"role": "system", "content": system_prompt},
+                # {"role": "system", "content": "You are a helpful assistant"},
                 #{"role": "system", "content": "你是一个KPI完成高手"},
                 # {"role": "system", "content": "你是一个写报告的能手。"},
-                {"role": "user", "content": prompt},
+                {"role": "user", "content": user_prompt},
             ],
             # 很多模型数值范围在 0-1,超过 1 要慎重
             #
