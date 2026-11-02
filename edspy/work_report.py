@@ -92,7 +92,7 @@ def get_work_report(eds_reportor):
         work_report = _load_from_file()
     else:
         # 更新本地数据
-        _write_to_file(work_report, eds_reportor.settings.project_name)
+        _write_to_file(work_report, eds_reportor.settings.project_code)
 
     return work_report
 
@@ -101,7 +101,7 @@ from openai import OpenAI
 def _complete(eds_reportor):
     """调大语言模型生成内容"""
     system_prompt = Path("prompts/system.md").read_text(encoding="utf-8")
-    user_prompt = Path(f"projects/{eds_reportor.settings.project_name}.txt").read_text(encoding="utf-8")
+    user_prompt = Path(f"projects/{eds_reportor.settings.project_code}.txt").read_text(encoding="utf-8")
 
     client = OpenAI(
         api_key=eds_reportor.mimi.open_ai_api_key, 
@@ -165,13 +165,13 @@ def _load_from_file():
 
 from datetime import date
 
-def _write_to_file(work_report, project_name):
+def _write_to_file(work_report, project_code):
     """将大语言模型生成的内容存入本地"""
     today = date.today()
 
     # 当前年份
     current_year = str(today.year)
-    year_dir = REPORTS_DIR / current_year / project_name
+    year_dir = REPORTS_DIR / current_year / project_code
     # 如果不存在，则创建文件夹
     # 如果存在，也不报错
     year_dir.mkdir(parents=True, exist_ok=True)
