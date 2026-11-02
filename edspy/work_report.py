@@ -148,14 +148,14 @@ def _complete(eds_reportor):
 
 
 from pathlib import Path
-DATA_DIR = Path(__file__).parent.parent / "data"
+REPORTS_DIR = Path(__file__).parent.parent / "reports"
 
 import re
 
 def _load_from_file():
     """从本地文件中读取"""
     start_with = re.compile(r'^work-report.*')  # 匹配以 work-report 开头的文件名
-    files = [file for file in DATA_DIR.iterdir() if start_with.match(file.name) and file.is_file()]
+    files = [file for file in REPORTS_DIR.iterdir() if start_with.match(file.name) and file.is_file()]
     random_file = choice(files)
     _logger.info(f"读取的本地文件：{random_file.name}")
 
@@ -171,7 +171,7 @@ def _write_to_file(work_report, project_name):
 
     # 当前年份
     current_year = str(today.year)
-    year_dir = DATA_DIR / current_year / project_name
+    year_dir = REPORTS_DIR / current_year / project_name
     # 如果不存在，则创建文件夹
     # 如果存在，也不报错
     year_dir.mkdir(parents=True, exist_ok=True)
